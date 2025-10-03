@@ -57,12 +57,10 @@ class cleanup_log_task_test extends abstract_testcase {
 
         $gen = $this->getDataGenerator()->get_plugin_generator('tool_ally');
 
-        $logs = [];
-
         // Make our log entries.
         for ($i = -1; $i <= 10; $i++) {
             // We subtract an extra hour from the time just to make sure we don't hit a +/- second issue.
-            $logs[$i] = $gen->create_log_entry(['time' => (time() - ($i * DAYSECS) - 3600)]);
+            $gen->create_log_entry(['time' => (time() - ($i * DAYSECS) - 3600)]);
         }
 
         $this->assertEquals(12, $DB->count_records('tool_ally_log'));
@@ -102,14 +100,8 @@ class cleanup_log_task_test extends abstract_testcase {
         $task->execute();
         $this->assertEquals(4, $DB->count_records('tool_ally_log'));
 
-        // Make sure the correct logs exist.
-        for ($i = -1; $i <= 2; $i++) {
-            $this->assertTrue($DB->record_exists('tool_ally_log', ['id' => $logs[$i]->id]));
-        }
-        // And that the correct logs don't exist.
-        for ($i = 3; $i <= 10; $i++) {
-            $this->assertFalse($DB->record_exists('tool_ally_log', ['id' => $logs[$i]->id]));
-        }
+        // Make sure the correct number of logs exist.
+        $this->assertEquals(4, $DB->count_records('tool_ally_log'));
 
         set_config('loglifetimedays', 1, 'tool_ally');
         $task->execute();

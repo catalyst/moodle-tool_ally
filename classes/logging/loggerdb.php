@@ -87,8 +87,15 @@ class loggerdb extends loggerbase {
             $message = null;
         }
 
+        if (isset($context['time'])) {
+            $time = $context['time'];
+            unset($context['time']);
+        } else {
+            $time = time();
+        }
+
         $record = (object) [
-            'time' => time(),
+            'time' => $time,
             'level' => $level,
             'code' => $code,
             'message' => $message,
