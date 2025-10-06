@@ -181,7 +181,7 @@ class tool_ally_generator extends component_generator_base {
      *
      * @param array $record Contains values to be set in the log entry.
      *                      Currently supports level, message, context, and time.
-     * @return stdClass
+     * @return null
      * @throws coding_exception
      * @throws dml_exception
      */
@@ -208,16 +208,11 @@ class tool_ally_generator extends component_generator_base {
             $context = [];
         }
 
-        $logid = $logger->log($level, $message, $context);
-        if (empty($logid)) {
-            throw new coding_exception("Log insert didn't return an id.");
-        }
-
         if (isset($record['time'])) {
-            $DB->set_field('tool_ally_log', 'time', (int)$record['time'], ['id' => $logid]);
+            $context['time'] = $record['time'];
         }
 
-        return $DB->get_record('tool_ally_log', ['id' => $logid]);
+        $logger->log($level, $message, $context);
 
     }
 }
