@@ -15,7 +15,6 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 namespace tool_ally\logging;
 defined('MOODLE_INTERNAL') || die();
-require_once(__DIR__ . '/../../vendor/autoload.php');
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 /**

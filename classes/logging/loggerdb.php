@@ -18,8 +18,6 @@ namespace tool_ally\logging;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . '/../../vendor/autoload.php');
-
 use Exception;
 use Psr\Log\InvalidArgumentException;
 
